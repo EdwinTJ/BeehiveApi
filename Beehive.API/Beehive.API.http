@@ -1,0 +1,6 @@
+@Beehive.API_HostAddress = http://localhost:5022
+
+GET {{Beehive.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
