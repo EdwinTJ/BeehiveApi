@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ILoremGenerator, LoremGenerator>();
+builder.Services.AddScoped<IMockDataService, MockDataService>();
 
 var app = builder.Build();
 

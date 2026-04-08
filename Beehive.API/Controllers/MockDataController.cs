@@ -1,50 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/mockdata")]
 public class MockDataController : ControllerBase
 {
+    private readonly IMockDataService _service;
+
+
+    public MockDataController(IMockDataService service)
+    {
+        _service = service;
+    }
+
     [HttpGet]
-    public IActionResult Get(
-        [FromQuery] int lorem = 5,
-        [FromQuery] string format = "json",
-        [FromQuery] int nested = 1)
+    public IActionResult Get([FromQuery] MockDataRequest request)
     {
-        var text = GenerateLorem(lorem);
+        var result = _service.Generate(request);
 
-        if(format.ToLower() == "text")
+        if(result == null)
         {
-            return Content(text, "text/plain");
+            return NotFound("Mock Data could not be generated");    
         }
 
-        var json = BuildNestedJson(text,nested);
-        return Ok(json);
-    }
+        if (request.Format?.ToLower() == "text")
+            return Content(result.ToString() ?? string.Empty ,"text/plain");
 
-    private string GenerateLorem(int wordCount)
-    {
-        var words = new[]
-        {
-            "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit","pontificating",
-            "fast", "blazing", "prime", "pontificating", "non", "officai", "mollit", "id", "nulla", "obseq", "eu",
-            "in", "aliqua", "ex", "ae", "ea", "Ut", "xe", "fugiat", "working", "booping", "baking"
-        };
-
-        var rnd = new Random();
-        return string.Join(" ",Enumerable.Range(0, wordCount).Select(_ => words[rnd.Next(words.Length)]));
-    }
-
-    private object BuildNestedJson(string text, int levels)
-    {
-        object current = new { data = text};
-
-        for (int i = 0; i < levels; i++)
-        {
-            current = new Dictionary<string, object>
-            {
-                [$"level{i+1}"] = current
-            };
-        }
-        return current;
+        return Ok(result);
     }
 }
