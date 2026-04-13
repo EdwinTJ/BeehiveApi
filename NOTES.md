@@ -6,3 +6,4 @@
 
 ## Call API
 https://localhost:7282/api/mockdata?lorem=20&nested=3
+https://localhost:7282/api/mock-users?count=10&format=json

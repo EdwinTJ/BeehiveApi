@@ -16,9 +16,9 @@ public class MockUserController : ControllerBase
     {
         var result = _service.Generate(request);
 
-        if(request.Format.ToLower() == "text")
+        if(request.Format?.ToLower() == "text")
         {
-            return Content(result.ToString(), "text/plain");
+            return Content(result.ToString() ?? string.Empty, "text/plain");
         }
         return Ok(result);
     }
