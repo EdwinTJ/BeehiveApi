@@ -5,9 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// Mock Data
 builder.Services.AddScoped<ILoremGenerator, LoremGenerator>();
 builder.Services.AddScoped<IMockDataService, MockDataService>();
-
+// Mock User
+builder.Services.AddScoped<IUserGenerator, UserGenerator>();
+builder.Services.AddScoped<IMockuserService, MockUserService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
